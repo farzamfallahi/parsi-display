@@ -37,7 +37,8 @@ cmake --build --preset debug
 wokwi-cli . --timeout 5000 --expect-text "Hello"
 ```
 
-**Status:** toolchain and simulator verified (program boots and prints over UART). Next: SSD1306 OLED driver over I²C, then Persian text on screen.
+**Status:** SSD1306 OLED driver working in simulation (bit-banged I²C on PB8/PB9). Next: Persian bitmap font and text rendering.
+![Simulated OLED test pattern](docs/sim-oled-test.png)
 
 **Porting notes:** the upstream example was written on Windows. To build on Linux I:
 - replaced Windows backslash paths with forward slashes in `cmake/st-project.cmake`
