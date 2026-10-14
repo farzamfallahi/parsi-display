@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "ssd1306.h"
 #include <string.h>
 
 /* USER CODE END Includes */
@@ -99,6 +99,22 @@ int main(void)
 
   char msg[] = "Hello, Wokwi!\r\n";
   HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
+  /* OLED test pattern: border plus a diagonal line */
+  ssd1306_init();
+  for (int x = 0; x < SSD1306_WIDTH; x++) {
+    ssd1306_set_pixel(x, 0, 1);
+    ssd1306_set_pixel(x, SSD1306_HEIGHT - 1, 1);
+  }
+  for (int y = 0; y < SSD1306_HEIGHT; y++) {
+    ssd1306_set_pixel(0, y, 1);
+    ssd1306_set_pixel(SSD1306_WIDTH - 1, y, 1);
+    ssd1306_set_pixel(y * 2, y, 1);
+  }
+  ssd1306_update();
+
+  char ok[] = "OLED ready\r\n";
+  HAL_UART_Transmit(&huart2, (uint8_t*)ok, strlen(ok), HAL_MAX_DELAY);
 
   /* USER CODE END 2 */
 

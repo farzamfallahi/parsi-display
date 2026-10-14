@@ -65,6 +65,7 @@ target_link_options(
 target_sources(
     ${TARGET_NAME} PRIVATE
     "Core/Src/main.c"
+    "Core/Src/ssd1306.c"
     "Core/Src/stm32c0xx_hal_msp.c"
     "Core/Src/stm32c0xx_it.c"
     "Core/Src/syscalls.c"
