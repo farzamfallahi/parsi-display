@@ -26,7 +26,44 @@ make test
 ./build/ps_demo "سلام دنیا"
 ```
 
+## Firmware (in progress)
+
+`firmware/` is an STM32 project (Nucleo-C031C6, STM32Cube HAL, CMake + Arm GCC) that runs in the [Wokwi](https://wokwi.com) simulator from the command line.
+
+```sh
+cd firmware
+cmake --preset debug
+cmake --build --preset debug
+wokwi-cli . --timeout 5000 --expect-text "Hello"
+```
+
+**Status:** toolchain and simulator verified (program boots and prints over UART). Next: SSD1306 OLED driver over I²C, then Persian text on screen.
+
+**Porting notes:** the upstream example was written on Windows. To build on Linux I:
+- replaced Windows backslash paths with forward slashes in `cmake/st-project.cmake`
+- fixed the linker script filename case (`TX` → `Tx`), which Linux treats as a different file
+- disabled the GDB server in `wokwi.toml` so the simulation runs without waiting for a debugger
+
 ## Roadmap
+
+- [x] 1. Shaping + bidi engine in C, with host tests
+- [x] 2. CI: host tests run on GitHub Actions on every push
+- [x] 3. STM32 toolchain and Wokwi simulation working from the command line
+- [ ] 4. STM32 firmware: SSD1306 OLED driver over I²C and text renderer
+- [ ] 5. Bitmap font format keyed by presentation-form code point
+- [ ] 6. Avalonia font studio (C#, MVVM) using this engine via P/Invoke
+- [ ] 7. Live link: app sends text over USB serial, device redraws
+- [ ] 8. Real hardware: photos, size/speed measurements
+
+## Known limits
+
+- One line at a time; paragraph direction is right to left
+- Simplified bidi, not the full Unicode Bidi Algorithm
+- Diacritics are dropped unless `PS_FLAG_KEEP_MARKS` is set
+
+## Credits
+
+`firmware/` is based on [wokwi/stm32-hello-wokwi](https://github.com/wokwi/stm32-hello-wokwi) by Uri Shaked, used under the MIT licence (see `firmware/LICENSE`).## Roadmap
 
 - [x] 1. Shaping + bidi engine in C, with host tests
 - [ ] 2. Bitmap font format keyed by presentation-form code point
@@ -40,3 +77,41 @@ make test
 - One line at a time; paragraph direction is right to left
 - Simplified bidi, not the full Unicode Bidi Algorithm
 - Diacritics are dropped unless `PS_FLAG_KEEP_MARKS` is set
+## Firmware (in progress)
+
+`firmware/` is an STM32 project (Nucleo-C031C6, STM32Cube HAL, CMake + Arm GCC) that runs in the [Wokwi](https://wokwi.com) simulator from the command line.
+
+```sh
+cd firmware
+cmake --preset debug
+cmake --build --preset debug
+wokwi-cli . --timeout 5000 --expect-text "Hello"
+```
+
+**Status:** toolchain and simulator verified (program boots and prints over UART). Next: SSD1306 OLED driver over I²C, then Persian text on screen.
+
+**Porting notes:** the upstream example was written on Windows. To build on Linux I:
+- replaced Windows backslash paths with forward slashes in `cmake/st-project.cmake`
+- fixed the linker script filename case (`TX` → `Tx`), which Linux treats as a different file
+- disabled the GDB server in `wokwi.toml` so the simulation runs without waiting for a debugger
+
+## Roadmap
+
+- [x] 1. Shaping + bidi engine in C, with host tests
+- [x] 2. CI: host tests run on GitHub Actions on every push
+- [x] 3. STM32 toolchain and Wokwi simulation working from the command line
+- [ ] 4. STM32 firmware: SSD1306 OLED driver over I²C and text renderer
+- [ ] 5. Bitmap font format keyed by presentation-form code point
+- [ ] 6. Avalonia font studio (C#, MVVM) using this engine via P/Invoke
+- [ ] 7. Live link: app sends text over USB serial, device redraws
+- [ ] 8. Real hardware: photos, size/speed measurements
+
+## Known limits
+
+- One line at a time; paragraph direction is right to left
+- Simplified bidi, not the full Unicode Bidi Algorithm
+- Diacritics are dropped unless `PS_FLAG_KEEP_MARKS` is set
+
+## Credits
+
+`firmware/` is based on [wokwi/stm32-hello-wokwi](https://github.com/wokwi/stm32-hello-wokwi) by Uri Shaked, used under the MIT licence (see `firmware/LICENSE`).
